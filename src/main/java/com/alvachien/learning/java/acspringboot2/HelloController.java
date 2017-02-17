@@ -6,18 +6,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;  
 import org.springframework.web.bind.annotation.RestController; 
 
+@RestController  
 public class HelloController {
-    protected static Logger logger=LoggerFactory.getLogger(HelloController.class);  
+    protected static Logger logger = LoggerFactory.getLogger(HelloController.class);  
     
     @RequestMapping("/")  
     public String helloworld(){  
-        logger.debug("∑√Œ hello");  
+        logger.debug("hello");  
         return "Hello world from Spring Boot!";  
     }  
       
     @RequestMapping("/hello/{name}")  
     public String helloName(@PathVariable String name){  
-        logger.debug("∑√Œ helloName,Name={}",name);  
+        logger.debug("hello Name,Name={}",name);  
         return "Hello "+name + " from Spring Boot!";  
     }
 }
