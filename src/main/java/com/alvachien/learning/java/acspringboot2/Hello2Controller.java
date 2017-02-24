@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping("/hello")
-public class HelloController {
+@RequestMapping("/hello2")
+public class Hello2Controller {
     protected static Logger logger = LoggerFactory.getLogger(HelloController.class);
-    private static final String template = "Hello, %s! Greeting from Spring-Boot.";
+    private static final String template = "Hello2, %s! Greeting from Spring-Boot.";
     		
     @RequestMapping(method=RequestMethod.GET)
     public @ResponseBody Greeting sayHello(@RequestParam(value="name", required=false, defaultValue="Stranger") String name) {
