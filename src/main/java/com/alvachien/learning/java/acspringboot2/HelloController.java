@@ -16,9 +16,9 @@ public class HelloController {
         return "Hello world from Spring Boot!";  
     }  
       
-    @RequestMapping("/hello/{name}")  
+    @RequestMapping("/hello/{name}")
     public String helloName(@PathVariable String name){  
         logger.debug("hello Name,Name={}",name);  
-        return "Hello "+name + " from Spring Boot!";  
+        return "Hello "+ name + " from Spring Boot!";  
     }
 }
