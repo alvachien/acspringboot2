@@ -3,6 +3,7 @@ package com.alvachien.learning.java.acspringboot2.service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import com.alvachien.learning.java.acspringboot2.model.*;
 import org.apache.olingo.commons.api.edm.EdmPrimitiveTypeKind;
@@ -15,6 +16,7 @@ import org.apache.olingo.commons.api.edm.provider.CsdlEntityType;
 import org.apache.olingo.commons.api.edm.provider.CsdlProperty;
 import org.apache.olingo.commons.api.edm.provider.CsdlPropertyRef;
 import org.apache.olingo.commons.api.edm.provider.CsdlSchema;
+import org.apache.olingo.commons.api.ex.ODataException;
 import org.apache.olingo.commons.api.edm.provider.CsdlNavigationProperty;
 import org.apache.olingo.commons.api.edm.provider.CsdlNavigationPropertyBinding;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,26 +28,45 @@ public class GenericEdmProvider extends CsdlAbstractEdmProvider {
 	private ApplicationContext ctx;
 
 	@Override
-	public List<CsdlSchema> getSchemas() {
+	public List<CsdlSchema> getSchemas() throws ODataException {
 
 		// create Schema
 		CsdlSchema schema = new CsdlSchema();
 		schema.setNamespace(Constants.NAMESPACE);
+	
+		Map<String, CsdlAbstractEdmProvider> entityProviders = ctx
+				.getBeansOfType(CsdlAbstractEdmProvider.class);
 
 		// add EntityTypes
 		List<CsdlEntityType> entityTypes = new ArrayList<CsdlEntityType>();
-		entityTypes.add(getEntityType(Constants.ET_PRODUCT_FQN));
-		entityTypes.add(getEntityType(Constants.ET_FINACNTCTGY_FQN));
-		entityTypes.add(getEntityType(Constants.ET_FINACNT_FQN));
-		entityTypes.add(getEntityType(Constants.ET_FINACNTEXTDP_FQN));
-		schema.setEntityTypes(entityTypes);
+		for (String entity : entityProviders.keySet()) {
+			CsdlAbstractEdmProvider entityProvider = entityProviders.get(entity);
+			entityTypes.add(entityProvider.getEntityType(null));
+		}
 
+		schema.setEntityTypes(entityTypes);
+		
 		// add EntityContainer
 		schema.setEntityContainer(getEntityContainer());
 
 		// finally
 		List<CsdlSchema> schemas = new ArrayList<CsdlSchema>();
 		schemas.add(schema);
+		
+//		// add EntityTypes
+//		List<CsdlEntityType> entityTypes = new ArrayList<CsdlEntityType>();
+//		entityTypes.add(getEntityType(Constants.ET_PRODUCT_FQN));
+//		entityTypes.add(getEntityType(Constants.ET_FINACNTCTGY_FQN));
+//		entityTypes.add(getEntityType(Constants.ET_FINACNT_FQN));
+//		entityTypes.add(getEntityType(Constants.ET_FINACNTEXTDP_FQN));
+//		schema.setEntityTypes(entityTypes);
+//
+//		// add EntityContainer
+//		schema.setEntityContainer(getEntityContainer());
+//
+//		// finally
+//		List<CsdlSchema> schemas = new ArrayList<CsdlSchema>();
+//		schemas.add(schema);
 
 		return schemas;
 	}
